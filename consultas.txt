@@ -1,0 +1,156 @@
+/********************MODELOS*************************/
+//listado de modelos
+SELECT * FROM comisionB2023.modelos
+
+SELECT m.id_modelo, m.nombre, f.nombre AS fabricante
+FROM comisionB2023.modelos AS m
+INNER JOIN comisionB2023.fabricantes AS f ON f.id_fabricante=m.id_fabricante 
+
+//listado de modelos con filtro de fabricantes
+
+SELECT * FROM comisionB2023.modelos WHERE id_modelo=(id_modelo)
+//insertar en la tabla modelos
+INSERT INTO `comisionB2023`.`modelos` (`nombre`, `id_fabricante`) VALUES ('Modelo4', '3');
+
+//seleccionar un registro por un id determinado 
+SELECT * FROM comisionB2023.modelos WHERE id_modelo=(id_modelo)
+
+//modificacion de un registro en la tabla modelos 
+UPDATE `comisionB2023`.`modelos` SET `nombre` = '(texto_a_modificar)', `id_fabricante` = '(id_fabricante_modificar)' WHERE `id_modelo` = (id_modelo);
+
+//eliminar un registro  (borrado fisico)
+DELETE FROM `comisionB2023`.`modelos` WHERE `id_modelo` = (id_modelo);
+//borrado logico (es un update de estado )
+no aplica
+/*********************************************/
+
+/*********************FABRICANTES***********************/
+
+//listado de fabricantes
+SELECT * FROM comisionB2023.fabricantes 
+
+//insertar fabrica 
+INSERT INTO `comisionB2023`.`fabricantes` (`nombre`) VALUES ('prueba1');
+
+//editar un registro de la tabla fabricantes
+UPDATE `comisionB2023`.`fabricantes` SET `nombre` = (texto_a _editar) WHERE `id_fabricante` = (id_fabricante);
+
+//borrar fisicamente un registro
+DELETE FROM `comisionB2023`.`fabricantes` WHERE `id_fabricante` = id_fabricante;
+
+//modicacion de la tabla fabricantes donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`fabricantes` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla fabricantes
+UPDATE `comisionB2023`.`fabricantes` SET `estado` = 'B' WHERE `id_fabricante` = id_fabricante;
+
+//listado de equipos por fabricantes
+SELECT e.id_equipo, e.nombre
+FROM fabricantes AS f
+INNER JOIN modelos AS m ON m.id_fabricante=f.id_fabricante 
+INNER JOIN equipos AS e ON e.id_modelo=m.id_modelo 
+WHERE f.id_fabricante=(variable)
+/********************************************/
+
+/*********************TIPOS DE EQUIPO***********************/
+
+//listado de tipos de equipos
+SELECT * FROM comisionB2023.tipos_equipo
+
+//insertar tipos de equipo 
+INSERT INTO `comisionB2023`.`tipos_equipo` (`nombre`) VALUES ('prueba_tipo_uno');
+
+//editar un registro de la tabla tipos de equipos
+UPDATE `comisionB2023`.`tipos_equipo` SET `nombre` = (texto_a _editar) WHERE `id_tipo_equipo` = (id_tipo_equipo);
+
+//borrar fisicamente un registro
+DELETE FROM `comisionB2023`.`tipos_equipo` WHERE `id_tipos_equipo` = (id_tipos_equipo);
+
+//modicacion de la tabla tipos de equipos donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`tipos_equipo` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla tipos_equipo
+UPDATE `comisionB2023`.`tipos_equipo` SET `estado` = 'B' WHERE `id_tipos_equipo` = id_tipos_equipo;
+
+//lista de equipos por tipos de equipo
+SELECT e.id_equipo, e.nombre
+FROM comisionB2023.tipos_equipo AS te
+INNER JOIN equipos AS e ON e.id_tipo_equipo=te.id_tipo_equipo 
+WHERE te.id_tipo_equipo=(variable)
+
+/********************************************/
+
+/*********************UBICACIONES***********************/
+
+//listado de ubicaciones
+SELECT * FROM comisionB2023.ubicaciones
+
+//insertar ubicaciones 
+INSERT INTO `comisionB2023`.`ubicaciones` (`nombre`) VALUES ('prueba_ubicacion');
+
+//editar un registro de la tabla ubicaciones
+UPDATE `comisionB2023`.`ubicaciones` SET `nombre` = (texto_a _editar) WHERE `id_ubicacion` = (id_ubicacion);
+
+//borrar fisicamente un ubicaciones
+DELETE FROM `comisionB2023`.`ubicaciones` WHERE `id_ubicacion` = (id_ubicacion);
+
+//modicacion de la tabla ubicaciones donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`ubicaciones` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla ubicaciones
+UPDATE `comisionB2023`.`ubicaciones` SET `estado` = 'B' WHERE `id_ubicacion` = id_ubicacion;
+
+/********************************************/
+
+/*********************EQUIPOS***********************/
+ listado de equipos inicio
+
+SELECT e.id_equipo, e.nombre,te.nombre tipo_equipo ,concat_ws(' - ', m.nombre, f.nombre) modelo_fabricante, u.nombre lugar_ubicacion, e.serial, e.estado
+FROM equipos AS e
+INNER JOIN tipos_equipo AS te ON te.id_tipo_equipo=e.id_tipo_equipo
+LEFT JOIN modelos AS m ON m.id_modelo=e.id_modelo
+LEFT JOIN ubicaciones AS u ON u.id_ubicacion=e.id_ubicacion
+LEFT JOIN fabricantes AS f ON f.id_fabricante = m.id_fabricante
+WHERE 
+filtro1-->  e.nombre like '%(variable)%'
+filtro2-->  e.id_tipo_equipo = '(variable)'
+filtro3-->  e.id_modelo = '(variable)'
+filtro4-->  e.id_ubicacion = '(variable)'
+filtro5-->  e.serial like '%variable%'
+
+//cuando vamos a editar un equipo 
+SELECT * FROM comisionB2023.equipos WHERE id_equipo=(id_equipo)
+
+/********************************************/
+/*********************ROLES***********************/
+
+//listado de tipos de equipos
+SELECT * FROM comisionB2023.roles
+
+//insertar tipos de equipo 
+INSERT INTO `comisionB2023`.`roles` (`nombre`) VALUES ('Secretario');
+
+//editar un registro de la tabla roles
+UPDATE `comisionB2023`.`roles` SET `nombre` = (texto_a _editar) WHERE `id_rol` = (id_rol);
+
+//borrar fisicamente un registro de la tabla roles
+DELETE FROM `comisionB2023`.`roles` WHERE `id_rol` = (id_rol);
+
+//modicacion de la tabla roles donde se agrega el campo "estado"
+ALTER TABLE `comisionB2023`.`roles` 
+ADD COLUMN `estado` ENUM('A', 'B') NOT NULL DEFAULT 'A' AFTER `nombre`;
+
+//borrado logico de un registro en la tabla roles
+UPDATE `comisionB2023`.`roles` SET `estado` = 'B' WHERE `id_rol` = id_rol;
+
+//lista de equipos por tipos de equipo
+SELECT e.id_equipo, e.nombre
+FROM comisionB2023.tipos_equipo AS te
+INNER JOIN equipos AS e ON e.id_tipo_equipo=te.id_tipo_equipo 
+WHERE te.id_tipo_equipo=(variable)
+
+/********************************************/
+
